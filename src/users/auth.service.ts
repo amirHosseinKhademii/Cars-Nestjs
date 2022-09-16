@@ -1,5 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { encrypter } from 'src/utils/encrypter';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { encrypter, hasher } from 'src/utils/encrypter';
 import { UsersService } from './users.service';
 
 @Injectable()
@@ -11,5 +15,15 @@ export class AuthService {
     if (users?.length) throw new BadRequestException('Email already exist.');
     const hashed = await encrypter(password);
     return await this.userService.create(email, hashed);
+  }
+
+  async signin(email: string, password: string) {
+    const [user] = await this.userService.find(email);
+    if (!user) throw new NotFoundException('Email does not exist.');
+    const [salt, hash] = user.password.split('.');
+    const pass = await hasher(password, salt);
+    if (pass.toString('hex') !== hash)
+      throw new BadRequestException('Password is wrong.');
+    return user;
   }
 }
