@@ -56,8 +56,7 @@ export class UsersController {
   }
 
   @Get('/:id')
-  findUser(@Param() { id }: { id: string }, @Session() session: any) {
-    console.log(session);
+  findUser(@Param() { id }: { id: string }) {
     return this.userService.findOne(parseInt(id));
   }
 
