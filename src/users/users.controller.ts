@@ -27,7 +27,7 @@ export class UsersController {
 
   @Get('/who')
   who(@Session() session: any) {
-    return this.userService.findOne(session.id);
+    return this.userService.findOne(session.userId);
   }
 
   @Post('/signup')
@@ -48,6 +48,11 @@ export class UsersController {
     const user = await this.authService.signin(email, password);
     session.userId = user.id;
     return user;
+  }
+
+  @Post('/signout')
+  async signoutUser(@Session() session: any) {
+    session.userId = null;
   }
 
   @Get('/:id')
