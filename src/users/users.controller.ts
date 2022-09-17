@@ -16,10 +16,13 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Serializer(UserDto)
 @Controller('auth')
+@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(
     private userService: UsersService,
@@ -32,7 +35,7 @@ export class UsersController {
   }
 
   @Get('/whoAm')
-  whoAm(@CurrentUser() user: string) {
+  whoAm(@CurrentUser() user: User) {
     return user;
   }
 
