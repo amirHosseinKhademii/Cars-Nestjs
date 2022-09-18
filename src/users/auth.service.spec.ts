@@ -66,9 +66,9 @@ describe('AUTH SERVICE', () => {
     expect(user.email).toBe(email);
   });
 
-  it('Sign in should work as expected', async () => {
+  it('Sign in should work as expected with wrong password', async () => {
     const email = 'amir@gmail.com';
-    const password = '12345';
+    const password = '1234';
     try {
       await service.signin(email, password);
     } catch (error) {
@@ -81,7 +81,7 @@ describe('AUTH SERVICE', () => {
   });
 
   it('Sign in should not work as expected', async () => {
-    const email = 'amir@gmail.com';
+    const email = 'ami@gmail.com';
     const password = '12345';
     try {
       await service.signin(email, password);
