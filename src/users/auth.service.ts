@@ -3,7 +3,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { encrypter, hasher } from 'src/utils/encrypter';
+import { encrypter, hasher } from '../utils/encrypter';
+
 import { UsersService } from './users.service';
 
 @Injectable()
