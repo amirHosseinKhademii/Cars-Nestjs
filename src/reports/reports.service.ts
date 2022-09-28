@@ -5,13 +5,19 @@ import { Repository } from 'typeorm';
 import { CreateReportDto } from './dtos/create-report.dto';
 import { Report } from './report.entity';
 import { ApproveReportDto } from './dtos/approve-report.dto';
+import { GetEstimateDto } from './dtos/get-estimate.dto';
 
 @Injectable()
 export class ReportsService {
   constructor(@InjectRepository(Report) private repo: Repository<Report>) {}
 
-  get() {
-    return this.repo.find();
+  get({ make, model }: Partial<GetEstimateDto>) {
+    return this.repo
+      .createQueryBuilder()
+      .select('*')
+      .where('make = :make', { make })
+      .where('model = :model', { model })
+      .getRawMany();
   }
   create(body: CreateReportDto, user: User) {
     const report = this.repo.create(body);
